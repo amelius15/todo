@@ -101,7 +101,7 @@
 	store.dispatch({
 	  type: 'SET_STATE',
 	  state: {
-	    items: _immutable.List.of(items)
+	    items: items
 	  }
 	});
 
@@ -39114,12 +39114,8 @@
 	  _createClass(AllPage, [{
 	    key: 'render',
 	    value: function render() {
-	      var temp = this.props.todos.toList();
-	      var temp1 = [];
-	      this.props.todos.toList().map(function (todo) {
-	        temp1 = todo;
-	      });
-	      var todos = temp1.map(function (todo) {
+	      console.log(this.props.todos);
+	      var todos = this.props.todos.map(function (todo) {
 	        return _react2.default.createElement(_todoitem2.default, { checked: todo.done, text: todo.text, id: todo.id });
 	      });
 
@@ -39277,10 +39273,8 @@
 	  function ToDo(props) {
 	    _classCallCheck(this, ToDo);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ToDo).call(this, props));
-
-	    _this.onCheck = _this.onCheck.bind(_this);
-	    return _this;
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ToDo).call(this, props));
+	    // this.onCheck = this.onCheck.bind(this);
 	  }
 
 	  _createClass(ToDo, [{
@@ -39295,6 +39289,7 @@
 	    value: function render() {
 	      var _this2 = this;
 
+	      var onCheck = this.onCheck;
 	      var liclass = (0, _classnames2.default)({
 	        'completed': this.props.checked
 	      });
@@ -39306,7 +39301,7 @@
 	          'div',
 	          { className: "view" },
 	          _react2.default.createElement('input', { className: "toggle", type: 'checkbox', checked: this.props.checked, onChange: function onChange() {
-	              return _this2.onCheck(_this2.props.id);
+	              return onCheck(_this2.props.id);
 	            } }),
 	          _react2.default.createElement(
 	            'label',
@@ -39341,7 +39336,7 @@
 	  value: true
 	});
 	var index = 0;
-	var addTodo = exports.addTodo = function addTodo(text) {
+	var add_todo = exports.add_todo = function add_todo(text) {
 	  return {
 	    type: 'ADD',
 	    id: index++,
@@ -39349,7 +39344,7 @@
 	  };
 	};
 
-	var changeTODOState = exports.changeTODOState = function changeTODOState(id) {
+	var toggle_todo = exports.toggle_todo = function toggle_todo(id) {
 	  return {
 	    type: 'CHANGE_FINISH',
 	    id: id
@@ -39395,44 +39390,25 @@
 	var Footer = function (_React$Component) {
 	  _inherits(Footer, _React$Component);
 
-	  function Footer(props) {
+	  function Footer() {
 	    _classCallCheck(this, Footer);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Footer).call(this, props));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Footer).apply(this, arguments));
 	  }
 
 	  _createClass(Footer, [{
 	    key: 'render',
 	    value: function render() {
-	      var all = _react2.default.createElement(
-	        'a',
-	        { href: '#/' },
-	        'All'
-	      );
-	      var active = _react2.default.createElement(
-	        'a',
-	        { href: '#/active' },
-	        'Active'
-	      );
-	      var completed = _react2.default.createElement(
-	        'a',
-	        { href: '#/completed' },
-	        'Completed'
-	      );
 
-	      if (this.props.selected === "all") all = _react2.default.createElement(
-	        'a',
-	        { className: "selected", href: '#/' },
-	        'All'
-	      );else if (this.props.selected === "active") active = _react2.default.createElement(
-	        'a',
-	        { className: "selected", href: '#/active' },
-	        'Active'
-	      );else if (this.props.selected === "completed") completed = _react2.default.createElement(
-	        'a',
-	        { className: "selected", href: '#/completed' },
-	        'Completed'
-	      );
+	      var allClass = (0, _classnames2.default)({
+	        'selected': this.props.selected === "all"
+	      });
+	      var activeClass = (0, _classnames2.default)({
+	        'selected': this.props.selected === "active"
+	      });
+	      var completedClass = (0, _classnames2.default)({
+	        'selected': this.props.selected === "completed"
+	      });
 
 	      return _react2.default.createElement(
 	        'footer',
@@ -39453,17 +39429,29 @@
 	          _react2.default.createElement(
 	            'li',
 	            null,
-	            all
+	            _react2.default.createElement(
+	              'a',
+	              { className: allClass, href: '#/' },
+	              'All'
+	            )
 	          ),
 	          _react2.default.createElement(
 	            'li',
 	            null,
-	            active
+	            _react2.default.createElement(
+	              'a',
+	              { className: activeClass, href: '#/active' },
+	              'Active'
+	            )
 	          ),
 	          _react2.default.createElement(
 	            'li',
 	            null,
-	            completed
+	            _react2.default.createElement(
+	              'a',
+	              { className: completedClass, href: '#/completed' },
+	              'Completed'
+	            )
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -39538,11 +39526,7 @@
 	  _createClass(ActivePage, [{
 	    key: 'render',
 	    value: function render() {
-	      var temp1 = [];
-	      this.props.todos.toList().map(function (todo) {
-	        temp1 = todo;
-	      });
-	      var todos = temp1.map(function (todo) {
+	      var todos = this.props.todos.map(function (todo) {
 	        if (!todo.done) return _react2.default.createElement(_todoitem2.default, { checked: todo.done, text: todo.text, id: todo.id });else return _react2.default.createElement('div', null);
 	      });
 
@@ -39662,11 +39646,7 @@
 	  _createClass(CompletedPage, [{
 	    key: 'render',
 	    value: function render() {
-	      var temp1 = [];
-	      this.props.todos.toList().map(function (todo) {
-	        temp1 = todo;
-	      });
-	      var todos = temp1.map(function (todo) {
+	      var todos = this.props.todos.map(function (todo) {
 	        if (todo.done) return _react2.default.createElement(_todoitem2.default, { checked: todo.done, text: todo.text, id: todo.id });else return _react2.default.createElement('div', null);
 	      });
 

@@ -1,5 +1,5 @@
 let index = 0
-export const addTodo = (text) => {
+export const add_todo = (text) => {
   return {
     type: 'ADD',
     id: index++,
@@ -7,7 +7,7 @@ export const addTodo = (text) => {
   }
 }
 
-export const changeTODOState = (id) => {
+export const toggle_todo = (id) => {
   return {
     type: 'CHANGE_FINISH',
     id

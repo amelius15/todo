@@ -17,7 +17,7 @@ const store = createStore(reducer);
 store.dispatch({
   type: 'SET_STATE',
   state: {
-    items: List.of(items)
+    items: items
   }
 });
 

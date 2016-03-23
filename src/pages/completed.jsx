@@ -10,11 +10,7 @@ class CompletedPage extends React.Component {
     super(props);
   }
   render() {
-    let temp1 = []
-    this.props.todos.toList().map(function(todo) {
-    temp1 = todo
-    });
-    const todos = temp1.map(function(todo) {
+    const todos = this.props.todos.map(function(todo) {
       if (todo.done)
       return (
         <ToDo checked={todo.done} text={todo.text} id={todo.id}></ToDo>

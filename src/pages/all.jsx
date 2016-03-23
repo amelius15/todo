@@ -11,12 +11,8 @@ class AllPage extends React.Component {
     super(props);
   }
   render() {
-    const temp = this.props.todos.toList();
-    let temp1 = []
-    this.props.todos.toList().map(function(todo) {
-    temp1 = todo
-    });
-    const todos = temp1.map(function(todo) {
+    console.log(this.props.todos);
+    const todos = this.props.todos.map(function(todo) {
       return (
     <ToDo checked={todo.done} text={todo.text} id={todo.id}></ToDo>
       );

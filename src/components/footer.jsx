@@ -3,33 +3,30 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 
 class Footer extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
-    let all = <a href="#/">All</a>;
-    let active = <a href="#/active">Active</a>;
-    let completed = <a href="#/completed">Completed</a>;
 
-    if(this.props.selected==="all")
-      all = <a className={"selected"} href="#/">All</a>;
-    else if(this.props.selected==="active")
-      active = <a className={"selected"} href="#/active">Active</a>;
-    else if(this.props.selected==="completed")
-      completed = <a className={"selected"} href="#/completed">Completed</a>;
+    let allClass = classNames({
+      'selected': this.props.selected==="all"
+    });
+    let activeClass = classNames({
+      'selected': this.props.selected==="active"
+    });
+    let completedClass = classNames({
+      'selected': this.props.selected==="completed"
+    });
 
     return (
             <footer className={"footer"}>
                 <span className={"todo-count"}><strong>{this.props.items}</strong> item left</span>
                 <ul className={"filters"}>
                     <li>
-                      {all} 
+                      <a className={allClass} href="#/">All</a>
                     </li>
                     <li>
-                      {active}
+                      <a className={activeClass} href="#/active">Active</a>
                     </li>
                     <li>
-                      {completed}
+                      <a className={completedClass} href="#/completed">Completed</a>
                     </li>
                 </ul>
                 <button className={"clear-completed"}>Clear completed</button>
