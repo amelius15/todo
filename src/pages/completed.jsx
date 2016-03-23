@@ -4,34 +4,38 @@ import classNames from 'classnames';
 import {connect} from 'react-redux';
 import ToDo from '../components/todoitem';
 import Footer from '../components/footer';
+import TodoForm from '../components/newTodoForm';
+import { toggleAllTodos } from '../actions';
 
 class CompletedPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    const todos = this.props.todos.map(function(todo) {
-      if (todo.done)
-      return (
-        <ToDo checked={todo.done} text={todo.text} id={todo.id}></ToDo>
-      );
-      else
-        return(<div></div>);
-    });
 
+  render() {
+
+    const allCheck = () => {
+        this.props.dispatch(toggleAllTodos());
+    }
 
     return (
     <div>
         <section className={"todoapp"}>
             <header className={"header"}>
                 <h1>todos</h1>
-                <input className={"new-todo"} placeholder="What needs to be done?" autofocus></input>
+            <TodoForm/>  
             </header>
             <section className={"main"}>
-                <input className={"toggle-all"} type="checkbox"></input>
+                <input className={"toggle-all"} type="checkbox" onChange={() => allCheck()}></input>
                 <label htmlFor={"toggle-all"}>Mark all as complete</label>
                 <ul className={"todo-list"}>
-                    {todos}
+                    {
+                      this.props.todos.map(function(todo,index) {
+                        if (todo.done)
+                        return (
+                          <ToDo checked={todo.done} text={todo.text} id={index}></ToDo>
+                        );
+                        else
+                          return(<div></div>);
+                      })
+                    }
                 </ul>
             </section>
             <Footer items={"5"} selected={"completed"}> </Footer>
@@ -45,7 +49,7 @@ class CompletedPage extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    todos: state.get('items')
+    todos: state.items
   };
 }
 

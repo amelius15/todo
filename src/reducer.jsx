@@ -1,16 +1,11 @@
-import {List, Map} from 'immutable';
+const items = [{done: true, text:"Entry 1"},{done: false, text:"Screw this"}, {done: true, text: "ayyy lmao"}];
 
-function setState(state, newState) {
-  return state.merge(newState);
-}
+const initialState = {items: items};
 
-export default function(state = Map(), action) {
+export default function(state = initialState, action) {
   switch (action.type) {
 
-  case 'SET_STATE':
-    return setState(state, action.state);
-
-  case 'ADD':
+  case 'ADD_TODO':
       return Object.assign({}, state, {
         items: [
 
@@ -26,12 +21,10 @@ export default function(state = Map(), action) {
 
       })
 
-  case 'CHANGE_FINISH':
-      console.log(action.items);
+  case 'TOGGLE_TODO':
       return Object.assign({}, state, {
         items: state.items.map((todo, index) => {
-          console.log('ChangeState');
-          if(index === action.index) {
+          if(index === action.id) {
             return Object.assign({}, todo, {
               done: !todo.done
             })
@@ -40,6 +33,24 @@ export default function(state = Map(), action) {
           return todo
 
         })
+
+      })
+
+  case 'TOGGLE_ALL_TODOS':
+      return Object.assign({}, state, {
+        items: state.items.map((todo, index) => {
+          return Object.assign({}, todo, {
+              done: !todo.done
+            })
+
+        })
+
+      })
+
+  case 'ClEAR_COMPLETED_TODOS':
+      console.log(state.items);
+      return Object.assign({}, state, {
+        items: state.items.filter((todo) => { return todo.done=== false})
 
       })
 

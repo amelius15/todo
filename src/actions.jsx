@@ -1,15 +1,27 @@
 let index = 0
-export const add_todo = (text) => {
+export const addTodo = text => {
   return {
-    type: 'ADD',
+    type: 'ADD_TODO',
     id: index++,
     text
   }
 }
 
-export const toggle_todo = (id) => {
+export const toggleTodo = id => {
   return {
-    type: 'CHANGE_FINISH',
+    type: 'TOGGLE_TODO',
     id
+  }
+}
+
+export const toggleAllTodos = () => {
+  return {
+    type: 'TOGGLE_ALL_TODOS'
+  }
+}
+
+export const clearFinishedTodos = () => {
+  return {
+    type: 'ClEAR_COMPLETED_TODOS'
   }
 }

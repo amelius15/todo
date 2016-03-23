@@ -1,36 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {List, Map} from 'immutable';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 import ToDo from '../components/todoitem';
 import Footer from '../components/footer';
+import { toggleAllTodos } from '../actions';
+import TodoForm from '../components/newTodoForm';
 
 class AllPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    console.log(this.props.todos);
-    const todos = this.props.todos.map(function(todo) {
-      return (
-    <ToDo checked={todo.done} text={todo.text} id={todo.id}></ToDo>
-      );
-    });
 
+  render() {
+
+    const allCheck = () => {
+        this.props.dispatch(toggleAllTodos());
+    }
 
     return (
     <div>
         <section className={"todoapp"}>
             <header className={"header"}>
                 <h1>todos</h1>
-                <input className={"new-todo"} placeholder="What needs to be done?" autofocus></input>
+            <TodoForm/>  
             </header>
             <section className={"main"}>
-                <input className={"toggle-all"} type="checkbox"></input>
+                <input className={"toggle-all"} type="checkbox" onChange={() => allCheck()}></input>
                 <label htmlFor={"toggle-all"}>Mark all as complete</label>
                 <ul className={"todo-list"}>
-                    {todos}
+                    {
+                        this.props.todos.map(function(todo,index) {
+                          return (
+                            <ToDo checked={todo.done} text={todo.text} id={index}></ToDo>
+                          );
+                        })
+                    }
                 </ul>
             </section>
             <Footer items={"5"} selected={"all"}> </Footer>
@@ -44,7 +46,7 @@ class AllPage extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    todos: state.get('items')
+    todos: state.items
   };
 }
 

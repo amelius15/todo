@@ -85,25 +85,17 @@
 
 	var _all2 = _interopRequireDefault(_all);
 
-	var _active = __webpack_require__(411);
+	var _active = __webpack_require__(412);
 
 	var _active2 = _interopRequireDefault(_active);
 
-	var _completed = __webpack_require__(412);
+	var _completed = __webpack_require__(413);
 
 	var _completed2 = _interopRequireDefault(_completed);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var items = [{ id: 0, done: true, text: "Entry 1" }, { id: 1, done: false, text: "Screw this" }, { id: 2, done: true, text: "ayyy lmao" }];
-	console.log("list", items);
 	var store = (0, _redux.createStore)(_reducer2.default);
-	store.dispatch({
-	  type: 'SET_STATE',
-	  state: {
-	    items: items
-	  }
-	});
 
 	var routes = _react2.default.createElement(
 	  _reactRouter.Route,
@@ -38971,22 +38963,19 @@
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/anthonylobko/Documents/todomvc-app-template/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/anthonylobko/Documents/todomvc-app-template/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
 	exports.default = function () {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? (0, _immutable.Map)() : arguments[0];
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	  var action = arguments[1];
 
 	  switch (action.type) {
 
-	    case 'SET_STATE':
-	      return setState(state, action.state);
-
-	    case 'ADD':
+	    case 'ADD_TODO':
 	      return Object.assign({}, state, {
 	        items: [].concat(_toConsumableArray(state.items), [{
 	          done: false,
@@ -38996,12 +38985,10 @@
 
 	      });
 
-	    case 'CHANGE_FINISH':
-	      console.log(action.items);
+	    case 'TOGGLE_TODO':
 	      return Object.assign({}, state, {
 	        items: state.items.map(function (todo, index) {
-	          console.log('ChangeState');
-	          if (index === action.index) {
+	          if (index === action.id) {
 	            return Object.assign({}, todo, {
 	              done: !todo.done
 	            });
@@ -39012,19 +38999,36 @@
 
 	      });
 
+	    case 'TOGGLE_ALL_TODOS':
+	      return Object.assign({}, state, {
+	        items: state.items.map(function (todo, index) {
+	          return Object.assign({}, todo, {
+	            done: !todo.done
+	          });
+	        })
+
+	      });
+
+	    case 'ClEAR_COMPLETED_TODOS':
+	      console.log(state.items);
+	      return Object.assign({}, state, {
+	        items: state.items.filter(function (todo) {
+	          return todo.done === false;
+	        })
+
+	      });
+
 	    default:
 	      return state;
 	  }
 	  return state;
 	};
 
-	var _immutable = __webpack_require__(160);
-
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-	function setState(state, newState) {
-	  return state.merge(newState);
-	}
+	var items = [{ done: true, text: "Entry 1" }, { done: false, text: "Screw this" }, { done: true, text: "ayyy lmao" }];
+
+	var initialState = { items: items };
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/anthonylobko/Documents/todomvc-app-template/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "reducer.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
@@ -39065,7 +39069,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -39077,8 +39081,6 @@
 	var _reactDom = __webpack_require__(159);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _immutable = __webpack_require__(160);
 
 	var _classnames = __webpack_require__(407);
 
@@ -39094,6 +39096,12 @@
 
 	var _footer2 = _interopRequireDefault(_footer);
 
+	var _actions = __webpack_require__(409);
+
+	var _newTodoForm = __webpack_require__(411);
+
+	var _newTodoForm2 = _interopRequireDefault(_newTodoForm);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -39103,70 +39111,75 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var AllPage = function (_React$Component) {
-	  _inherits(AllPage, _React$Component);
+	    _inherits(AllPage, _React$Component);
 
-	  function AllPage(props) {
-	    _classCallCheck(this, AllPage);
+	    function AllPage() {
+	        _classCallCheck(this, AllPage);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(AllPage).call(this, props));
-	  }
-
-	  _createClass(AllPage, [{
-	    key: 'render',
-	    value: function render() {
-	      console.log(this.props.todos);
-	      var todos = this.props.todos.map(function (todo) {
-	        return _react2.default.createElement(_todoitem2.default, { checked: todo.done, text: todo.text, id: todo.id });
-	      });
-
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'section',
-	          { className: "todoapp" },
-	          _react2.default.createElement(
-	            'header',
-	            { className: "header" },
-	            _react2.default.createElement(
-	              'h1',
-	              null,
-	              'todos'
-	            ),
-	            _react2.default.createElement('input', { className: "new-todo", placeholder: 'What needs to be done?', autofocus: true })
-	          ),
-	          _react2.default.createElement(
-	            'section',
-	            { className: "main" },
-	            _react2.default.createElement('input', { className: "toggle-all", type: 'checkbox' }),
-	            _react2.default.createElement(
-	              'label',
-	              { htmlFor: "toggle-all" },
-	              'Mark all as complete'
-	            ),
-	            _react2.default.createElement(
-	              'ul',
-	              { className: "todo-list" },
-	              todos
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _footer2.default,
-	            { items: "5", selected: "all" },
-	            ' '
-	          )
-	        )
-	      );
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AllPage).apply(this, arguments));
 	    }
-	  }]);
 
-	  return AllPage;
+	    _createClass(AllPage, [{
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            var allCheck = function allCheck() {
+	                _this2.props.dispatch((0, _actions.toggleAllTodos)());
+	            };
+
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'section',
+	                    { className: "todoapp" },
+	                    _react2.default.createElement(
+	                        'header',
+	                        { className: "header" },
+	                        _react2.default.createElement(
+	                            'h1',
+	                            null,
+	                            'todos'
+	                        ),
+	                        _react2.default.createElement(_newTodoForm2.default, null)
+	                    ),
+	                    _react2.default.createElement(
+	                        'section',
+	                        { className: "main" },
+	                        _react2.default.createElement('input', { className: "toggle-all", type: 'checkbox', onChange: function onChange() {
+	                                return allCheck();
+	                            } }),
+	                        _react2.default.createElement(
+	                            'label',
+	                            { htmlFor: "toggle-all" },
+	                            'Mark all as complete'
+	                        ),
+	                        _react2.default.createElement(
+	                            'ul',
+	                            { className: "todo-list" },
+	                            this.props.todos.map(function (todo, index) {
+	                                return _react2.default.createElement(_todoitem2.default, { checked: todo.done, text: todo.text, id: index });
+	                            })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        _footer2.default,
+	                        { items: "5", selected: "all" },
+	                        ' '
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AllPage;
 	}(_react2.default.Component);
 
 	function mapStateToProps(state) {
-	  return {
-	    todos: state.get('items')
-	  };
+	    return {
+	        todos: state.items
+	    };
 	}
 
 	var Connector = (0, _reactRedux.connect)(mapStateToProps)(AllPage);
@@ -39238,7 +39251,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -39268,54 +39281,48 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var ToDo = function (_React$Component) {
-	  _inherits(ToDo, _React$Component);
+	    _inherits(ToDo, _React$Component);
 
-	  function ToDo(props) {
-	    _classCallCheck(this, ToDo);
+	    function ToDo() {
+	        _classCallCheck(this, ToDo);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ToDo).call(this, props));
-	    // this.onCheck = this.onCheck.bind(this);
-	  }
-
-	  _createClass(ToDo, [{
-	    key: 'onCheck',
-	    value: function onCheck(id) {
-	      // this.setState({checked: !this.state.checked });
-	      this.props.dispatch((0, _actions.changeTODOState)(id));
-	      console.log('dispatched');
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ToDo).apply(this, arguments));
 	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
 
-	      var onCheck = this.onCheck;
-	      var liclass = (0, _classnames2.default)({
-	        'completed': this.props.checked
-	      });
+	    _createClass(ToDo, [{
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
 
-	      return _react2.default.createElement(
-	        'li',
-	        { className: liclass },
-	        _react2.default.createElement(
-	          'div',
-	          { className: "view" },
-	          _react2.default.createElement('input', { className: "toggle", type: 'checkbox', checked: this.props.checked, onChange: function onChange() {
-	              return onCheck(_this2.props.id);
-	            } }),
-	          _react2.default.createElement(
-	            'label',
-	            null,
-	            this.props.text
-	          ),
-	          _react2.default.createElement('button', { className: "destroy" })
-	        ),
-	        _react2.default.createElement('input', { className: "edit", value: 'Create a TodoMVC template' })
-	      );
-	    }
-	  }]);
+	            var onCheck = function onCheck(id) {
+	                _this2.props.dispatch((0, _actions.toggleTodo)(id));
+	            };
+	            var itemClass = (0, _classnames2.default)({
+	                'completed': this.props.checked
+	            });
 
-	  return ToDo;
+	            return _react2.default.createElement(
+	                'li',
+	                { className: itemClass },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: "view" },
+	                    _react2.default.createElement('input', { className: "toggle", type: 'checkbox', checked: this.props.checked, onChange: function onChange() {
+	                            return onCheck(_this2.props.id);
+	                        } }),
+	                    _react2.default.createElement(
+	                        'label',
+	                        null,
+	                        this.props.text
+	                    ),
+	                    _react2.default.createElement('button', { className: "destroy" })
+	                ),
+	                _react2.default.createElement('input', { className: "edit", value: 'Create a TodoMVC template' })
+	            );
+	        }
+	    }]);
+
+	    return ToDo;
 	}(_react2.default.Component);
 
 	ToDo = (0, _reactRedux.connect)()(ToDo);
@@ -39336,18 +39343,30 @@
 	  value: true
 	});
 	var index = 0;
-	var add_todo = exports.add_todo = function add_todo(text) {
+	var addTodo = exports.addTodo = function addTodo(text) {
 	  return {
-	    type: 'ADD',
+	    type: 'ADD_TODO',
 	    id: index++,
 	    text: text
 	  };
 	};
 
-	var toggle_todo = exports.toggle_todo = function toggle_todo(id) {
+	var toggleTodo = exports.toggleTodo = function toggleTodo(id) {
 	  return {
-	    type: 'CHANGE_FINISH',
+	    type: 'TOGGLE_TODO',
 	    id: id
+	  };
+	};
+
+	var toggleAllTodos = exports.toggleAllTodos = function toggleAllTodos() {
+	  return {
+	    type: 'TOGGLE_ALL_TODOS'
+	  };
+	};
+
+	var clearFinishedTodos = exports.clearFinishedTodos = function clearFinishedTodos() {
+	  return {
+	    type: 'ClEAR_COMPLETED_TODOS'
 	  };
 	};
 
@@ -39379,6 +39398,10 @@
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
+	var _actions = __webpack_require__(409);
+
+	var _reactRedux = __webpack_require__(228);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -39399,15 +39422,20 @@
 	  _createClass(Footer, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
+	      var onClick = function onClick() {
+	        _this2.props.dispatch((0, _actions.clearFinishedTodos)());
+	      };
 
 	      var allClass = (0, _classnames2.default)({
-	        'selected': this.props.selected === "all"
+	        'selected': this.props.selected === 'all'
 	      });
 	      var activeClass = (0, _classnames2.default)({
-	        'selected': this.props.selected === "active"
+	        'selected': this.props.selected === 'active'
 	      });
 	      var completedClass = (0, _classnames2.default)({
-	        'selected': this.props.selected === "completed"
+	        'selected': this.props.selected === 'completed'
 	      });
 
 	      return _react2.default.createElement(
@@ -39456,7 +39484,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'button',
-	          { className: "clear-completed" },
+	          { className: "clear-completed", onClick: onClick },
 	          'Clear completed'
 	        )
 	      );
@@ -39465,6 +39493,8 @@
 
 	  return Footer;
 	}(_react2.default.Component);
+
+	Footer = (0, _reactRedux.connect)()(Footer);
 
 	exports.default = Footer;
 
@@ -39498,13 +39528,7 @@
 
 	var _reactRedux = __webpack_require__(228);
 
-	var _todoitem = __webpack_require__(408);
-
-	var _todoitem2 = _interopRequireDefault(_todoitem);
-
-	var _footer = __webpack_require__(410);
-
-	var _footer2 = _interopRequireDefault(_footer);
+	var _actions = __webpack_require__(409);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39514,81 +39538,48 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var ActivePage = function (_React$Component) {
-	  _inherits(ActivePage, _React$Component);
+	var TodoForm = function (_React$Component) {
+	  _inherits(TodoForm, _React$Component);
 
-	  function ActivePage(props) {
-	    _classCallCheck(this, ActivePage);
+	  function TodoForm(props) {
+	    _classCallCheck(this, TodoForm);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ActivePage).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TodoForm).call(this, props));
+
+	    _this.state = { new: "" };
+	    return _this;
 	  }
 
-	  _createClass(ActivePage, [{
+	  _createClass(TodoForm, [{
 	    key: 'render',
 	    value: function render() {
-	      var todos = this.props.todos.map(function (todo) {
-	        if (!todo.done) return _react2.default.createElement(_todoitem2.default, { checked: todo.done, text: todo.text, id: todo.id });else return _react2.default.createElement('div', null);
-	      });
+	      var _this2 = this;
+
+	      var onSubmit = function onSubmit(event) {
+	        _this2.props.dispatch((0, _actions.addTodo)(_this2.state.new));
+	        _this2.setState({ new: "" });
+	        event.preventDefault();
+	      };
+	      var onChange = function onChange(event) {
+	        _this2.setState({ new: event.target.value });
+	      };
 
 	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'section',
-	          { className: "todoapp" },
-	          _react2.default.createElement(
-	            'header',
-	            { className: "header" },
-	            _react2.default.createElement(
-	              'h1',
-	              null,
-	              'todos'
-	            ),
-	            _react2.default.createElement(
-	              'form',
-	              { onSubmit: this.props.addItem },
-	              _react2.default.createElement('input', { className: "new-todo", placeholder: 'What needs to be done?', autofocus: true })
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'section',
-	            { className: "main" },
-	            _react2.default.createElement('input', { className: "toggle-all", type: 'checkbox' }),
-	            _react2.default.createElement(
-	              'label',
-	              { htmlFor: "toggle-all" },
-	              'Mark all as complete'
-	            ),
-	            _react2.default.createElement(
-	              'ul',
-	              { className: "todo-list" },
-	              todos
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _footer2.default,
-	            { items: "5", selected: "active" },
-	            ' '
-	          )
-	        )
+	        'form',
+	        { onSubmit: onSubmit },
+	        _react2.default.createElement('input', { className: "new-todo", value: this.state.new, onChange: onChange, placeholder: 'What needs to be done?', autofocus: true })
 	      );
 	    }
 	  }]);
 
-	  return ActivePage;
+	  return TodoForm;
 	}(_react2.default.Component);
 
-	function mapStateToProps(state) {
-	  return {
-	    todos: state.get('items')
-	  };
-	}
+	TodoForm = (0, _reactRedux.connect)()(TodoForm);
 
-	var Connector = (0, _reactRedux.connect)(mapStateToProps)(ActivePage);
+	exports.default = TodoForm;
 
-	exports.default = Connector;
-
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/anthonylobko/Documents/todomvc-app-template/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "active.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/anthonylobko/Documents/todomvc-app-template/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "newTodoForm.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ },
 /* 412 */
@@ -39626,6 +39617,12 @@
 
 	var _footer2 = _interopRequireDefault(_footer);
 
+	var _newTodoForm = __webpack_require__(411);
+
+	var _newTodoForm2 = _interopRequireDefault(_newTodoForm);
+
+	var _actions = __webpack_require__(409);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -39634,21 +39631,23 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var CompletedPage = function (_React$Component) {
-	  _inherits(CompletedPage, _React$Component);
+	var ActivePage = function (_React$Component) {
+	  _inherits(ActivePage, _React$Component);
 
-	  function CompletedPage(props) {
-	    _classCallCheck(this, CompletedPage);
+	  function ActivePage() {
+	    _classCallCheck(this, ActivePage);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(CompletedPage).call(this, props));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ActivePage).apply(this, arguments));
 	  }
 
-	  _createClass(CompletedPage, [{
+	  _createClass(ActivePage, [{
 	    key: 'render',
 	    value: function render() {
-	      var todos = this.props.todos.map(function (todo) {
-	        if (todo.done) return _react2.default.createElement(_todoitem2.default, { checked: todo.done, text: todo.text, id: todo.id });else return _react2.default.createElement('div', null);
-	      });
+	      var _this2 = this;
+
+	      var allCheck = function allCheck() {
+	        _this2.props.dispatch((0, _actions.toggleAllTodos)());
+	      };
 
 	      return _react2.default.createElement(
 	        'div',
@@ -39664,12 +39663,14 @@
 	              null,
 	              'todos'
 	            ),
-	            _react2.default.createElement('input', { className: "new-todo", placeholder: 'What needs to be done?', autofocus: true })
+	            _react2.default.createElement(_newTodoForm2.default, null)
 	          ),
 	          _react2.default.createElement(
 	            'section',
 	            { className: "main" },
-	            _react2.default.createElement('input', { className: "toggle-all", type: 'checkbox' }),
+	            _react2.default.createElement('input', { className: "toggle-all", type: 'checkbox', onChange: function onChange() {
+	                return allCheck();
+	              } }),
 	            _react2.default.createElement(
 	              'label',
 	              { htmlFor: "toggle-all" },
@@ -39678,7 +39679,137 @@
 	            _react2.default.createElement(
 	              'ul',
 	              { className: "todo-list" },
-	              todos
+	              this.props.todos.map(function (todo, index) {
+	                if (!todo.done) return _react2.default.createElement(_todoitem2.default, { checked: todo.done, text: todo.text, id: index });else return _react2.default.createElement('div', null);
+	              })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _footer2.default,
+	            { items: "5", selected: "active" },
+	            ' '
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ActivePage;
+	}(_react2.default.Component);
+
+	function mapStateToProps(state) {
+	  return {
+	    todos: state.items
+	  };
+	}
+
+	ActivePage = (0, _reactRedux.connect)(mapStateToProps)(ActivePage);
+
+	exports.default = ActivePage;
+
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/anthonylobko/Documents/todomvc-app-template/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "active.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+
+/***/ },
+/* 413 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/anthonylobko/Documents/todomvc-app-template/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/anthonylobko/Documents/todomvc-app-template/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(159);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _classnames = __webpack_require__(407);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _reactRedux = __webpack_require__(228);
+
+	var _todoitem = __webpack_require__(408);
+
+	var _todoitem2 = _interopRequireDefault(_todoitem);
+
+	var _footer = __webpack_require__(410);
+
+	var _footer2 = _interopRequireDefault(_footer);
+
+	var _newTodoForm = __webpack_require__(411);
+
+	var _newTodoForm2 = _interopRequireDefault(_newTodoForm);
+
+	var _actions = __webpack_require__(409);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CompletedPage = function (_React$Component) {
+	  _inherits(CompletedPage, _React$Component);
+
+	  function CompletedPage() {
+	    _classCallCheck(this, CompletedPage);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(CompletedPage).apply(this, arguments));
+	  }
+
+	  _createClass(CompletedPage, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var allCheck = function allCheck() {
+	        _this2.props.dispatch((0, _actions.toggleAllTodos)());
+	      };
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'section',
+	          { className: "todoapp" },
+	          _react2.default.createElement(
+	            'header',
+	            { className: "header" },
+	            _react2.default.createElement(
+	              'h1',
+	              null,
+	              'todos'
+	            ),
+	            _react2.default.createElement(_newTodoForm2.default, null)
+	          ),
+	          _react2.default.createElement(
+	            'section',
+	            { className: "main" },
+	            _react2.default.createElement('input', { className: "toggle-all", type: 'checkbox', onChange: function onChange() {
+	                return allCheck();
+	              } }),
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: "toggle-all" },
+	              'Mark all as complete'
+	            ),
+	            _react2.default.createElement(
+	              'ul',
+	              { className: "todo-list" },
+	              this.props.todos.map(function (todo, index) {
+	                if (todo.done) return _react2.default.createElement(_todoitem2.default, { checked: todo.done, text: todo.text, id: index });else return _react2.default.createElement('div', null);
+	              })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -39696,7 +39827,7 @@
 
 	function mapStateToProps(state) {
 	  return {
-	    todos: state.get('items')
+	    todos: state.items
 	  };
 	}
 

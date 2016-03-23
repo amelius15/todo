@@ -1,18 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
+import { clearFinishedTodos } from '../actions';
+import { connect } from 'react-redux'
 
 class Footer extends React.Component {
   render() {
 
+    const onClick = () => {
+        this.props.dispatch(clearFinishedTodos());
+    };
+
     let allClass = classNames({
-      'selected': this.props.selected==="all"
+      'selected': this.props.selected==='all'
     });
     let activeClass = classNames({
-      'selected': this.props.selected==="active"
+      'selected': this.props.selected==='active'
     });
     let completedClass = classNames({
-      'selected': this.props.selected==="completed"
+      'selected': this.props.selected==='completed'
     });
 
     return (
@@ -29,10 +35,12 @@ class Footer extends React.Component {
                       <a className={completedClass} href="#/completed">Completed</a>
                     </li>
                 </ul>
-                <button className={"clear-completed"}>Clear completed</button>
+                <button className={"clear-completed"} onClick={onClick}>Clear completed</button>
             </footer>
     );
   }
 }
+
+Footer = connect()(Footer)
 
 export default Footer;

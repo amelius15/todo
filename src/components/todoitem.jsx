@@ -3,28 +3,22 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { connect } from 'react-redux'
 
-import { changeTODOState } from '../actions';
+import { toggleTodo } from '../actions';
 
 class ToDo extends React.Component {
-  constructor(props) {
-    super(props);
-    // this.onCheck = this.onCheck.bind(this);
-  }
-  onCheck(id){
-    // this.setState({checked: !this.state.checked });
-    this.props.dispatch(changeTODOState(id));
-    console.log('dispatched');
-  }
+    
   render() {
-    const onCheck = this.onCheck;
-    let liclass = classNames({
+    const onCheck = id => {
+        this.props.dispatch(toggleTodo(id));
+    }
+    let itemClass = classNames({
       'completed': this.props.checked
     });
 
     return (
-        <li className={liclass}>
+        <li className={itemClass}>
             <div className={"view"}>
-                <input className={"toggle"} type="checkbox" checked={this.props.checked} onChange={() => onCheck(this.props.id)}></input>
+                <input className={"toggle"} type="checkbox" checked={this.props.checked} onChange={() => onCheck(this.props.id)}/>
                 <label>{this.props.text}</label>
                 <button className={"destroy"}></button>
             </div>

@@ -11,15 +11,7 @@ import AllPage from './pages/all';
 import ActivePage from './pages/active';
 import CompletedPage from './pages/completed';
 
-const items = [{id: 0, done: true, text:"Entry 1"},{id: 1, done: false, text:"Screw this"}, {id: 2, done: true, text: "ayyy lmao"}];
-console.log("list", items);
 const store = createStore(reducer);
-store.dispatch({
-  type: 'SET_STATE',
-  state: {
-    items: items
-  }
-});
 
 const routes = <Route component={App}>
   <Route path="/active" component={ActivePage} />

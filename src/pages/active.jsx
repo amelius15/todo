@@ -4,35 +4,38 @@ import classNames from 'classnames';
 import {connect} from 'react-redux';
 import ToDo from '../components/todoitem';
 import Footer from '../components/footer';
+import TodoForm from '../components/newTodoForm';
+import { toggleAllTodos } from '../actions';
 
 class ActivePage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+
   render() {
-    const todos = this.props.todos.map(function(todo) {
-      if (!todo.done)
-      return (
-        <ToDo checked={todo.done} text={todo.text} id={todo.id}></ToDo>
-      );
-      else
-        return (<div></div>);
-    });
+
+    const allCheck = () => {
+        this.props.dispatch(toggleAllTodos());
+    }
 
     return (
     <div>
         <section className={"todoapp"}>
             <header className={"header"}>
                 <h1>todos</h1>
-                <form onSubmit={this.props.addItem}>
-                <input className={"new-todo"} placeholder="What needs to be done?" autofocus></input>
-                </form>
+            <TodoForm/>  
             </header>
             <section className={"main"}>
-                <input className={"toggle-all"} type="checkbox"></input>
+                <input className={"toggle-all"} type="checkbox" onChange={() => allCheck()}/>
                 <label htmlFor={"toggle-all"}>Mark all as complete</label>
                 <ul className={"todo-list"}>
-                    {todos}
+                    {
+                      this.props.todos.map(function(todo,index) {
+                        if (!todo.done)
+                        return (
+                          <ToDo checked={todo.done} text={todo.text} id={index}></ToDo>
+                        );
+                        else
+                          return (<div></div>);
+                      })
+                    }
                 </ul>
             </section>
             <Footer items={"5"} selected={"active"}> </Footer>
@@ -44,10 +47,11 @@ class ActivePage extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    todos: state.get('items')
+    todos: state.items
   };
 }
 
-const Connector = connect(mapStateToProps)(ActivePage);
+ActivePage = connect(mapStateToProps)(ActivePage);
 
-export default Connector;
+
+export default ActivePage;
