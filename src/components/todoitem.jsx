@@ -3,13 +3,12 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { connect } from 'react-redux'
 
-import { toggleTodo } from '../actions';
 
 class ToDo extends React.Component {
     
   render() {
     const onCheck = id => {
-        this.props.dispatch(toggleTodo(id));
+        this.props.onCheck(id);
     }
     let itemClass = classNames({
       'completed': this.props.checked

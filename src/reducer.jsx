@@ -47,7 +47,7 @@ export default function(state = initialState, action) {
 
       })
 
-  case 'ClEAR_COMPLETED_TODOS':
+  case 'CLEAR_COMPLETED_TODOS':
       console.log(state.items);
       return Object.assign({}, state, {
         items: state.items.filter((todo) => { return todo.done=== false})

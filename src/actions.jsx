@@ -22,6 +22,6 @@ export const toggleAllTodos = () => {
 
 export const clearFinishedTodos = () => {
   return {
-    type: 'ClEAR_COMPLETED_TODOS'
+    type: 'CLEAR_COMPLETED_TODOS'
   }
 }
